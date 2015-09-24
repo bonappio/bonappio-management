@@ -1,0 +1,52 @@
+﻿.vd_Modal { display: none; opacity: 0; width: 100%; max-width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 9999; background: rgba(32, 36, 42, 0.54); }
+.vd_Modal .vd_Modal_Box { position: absolute; left: 0; right: 0; max-width: 100%; margin-left: auto; margin-right: auto; top: 100px; -webkit-border-radius: 11px; -moz-border-radius: 11px; border-radius: 0px; border: 1px solid #FFF; box-shadow: 0 8px 0 0 rgba(50, 61, 73, 0.14); }
+.vd_Modal .vd_Modal_Box .vd_Modal_Title { display: block; max-width: 100%; height: 50px; line-height: 50px; margin-bottom: 0; }
+.vd_Modal .vd_Modal_Box .vd_Modal_Title .TCloseButton { width: 40px; height: 40px; line-height: 40px; position: absolute; right: 10px; top: 10px; }
+.vd_Modal .vd_Modal_Box .vd_Modal_Title .TCloseButton a { display: block; width: 40px; height: 40px; line-height: 40px; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; background: #fff; color: #e60000; }
+.vd_Modal .vd_Modal_Box .vd_Modal_Title .TCloseButton a span { display: block; width: 40px; height: 40px; line-height: 40px; color: #e60000; text-align: center; font-size: 18px; }
+.vd_Modal .vd_Modal_Box .vd_Modal_Title .TCloseButton a:hover { background: rgba(255,255,255,0.3); }
+.vd_Modal .vd_Modal_Box .vd_Modal_Title .TCloseButton a:hover span { color: #fff; }
+.vd_Modal .vd_Modal_Box .vd_Modal_Title i { margin: 8px 5px 0 10px; color: #fff; width: 28px; text-align: center; height: 38px; line-height: 38px; float: left; z-index: 9; }
+.vd_Modal .vd_Modal_Box .vd_Modal_Title i img { width: 28px; height: 28px; }
+.vd_Modal .vd_Modal_Box .vd_Modal_Title > span { background: #0090d9; display: block; padding: 0; color: #fff; font-size: 18px; border-radius: 4px 4px 0 0; padding-left: 20px; }
+.vd_Modal .vd_Modal_Box .vd_Modal_Content { display: block; background: #fff; border-radius: 0 0 4px 4px; }
+.vd_Modal .vd_Modal_Box .vd_Modal_Content .vd_Modal_Content_Box { display: block; max-width: 100%; border: 0 0; -webkit-border-radius: 4px; -moz-border-radius: 4px; border-radius: 4px; border-radius: 0 0 4px 4px; }
+.vd_Modal .vd_Modal_Box .vd_Modal_Content .vd_Modal_Content_Box:after { content: ""; display: block; clear: both; }
+.vd_Modal .vd_Close { height: 100%; width: 100%; position: absolute; }
+.vd_Modal .vd_Modal_Box .vd_Modal_Content .AlertBox { display: block; padding: 20px 20px 10px 20px;font-size:15px; }
+.vd_Modal .vd_Modal_Box .vd_Modal_Content .AlertBox:after { display: block; content: ""; clear: both; }
+.vd_Modal .vd_Modal_Box .vd_Modal_Content .AlertButtons { padding: 10px; }
+.vd_Modal .vd_Modal_Box .vd_Modal_Content .AlertButtons .buttonBox { float: right; }
+.vd_Modal .vd_Modal_Box .vd_Modal_Content .AlertButtons a { margin-left: 10px; float: left; }
+.vd_Modal .vd_Modal_Box .vd_Modal_Content .AlertButtons:after { display: block; content: ""; clear: both; }
+.vd_Modal.AlertRed .vd_Modal_Box .vd_Modal_Title > span { background: rgba(247, 32, 0, 0.37); color: #fff; }
+.vd_Modal.AlertRed .vd_Modal_Box .vd_Modal_Title i { color: #f56954; }
+.vd_Modal.AlertRed .vd_Modal_Box .vd_Modal_Content .vd_Modal_Content_Box { border: 0 0; }
+.vd_Modal.AlertBlue .vd_Modal_Box .vd_Modal_Title > span { background: #b2ddf4; color: #1498dc; }
+.vd_Modal.AlertBlue .vd_Modal_Box .vd_Modal_Title i { color: #1498dc; }
+.vd_Modal.AlertBlue .vd_Modal_Box .vd_Modal_Content .vd_Modal_Content_Box { border: 1px solid #e5e9ec; }
+.vd_Modal.AlertOrange .vd_Modal_Box .vd_Modal_Title > span { background: #fbe1b7; color: #f5aa34; }
+.vd_Modal.AlertOrange .vd_Modal_Box .vd_Modal_Title i { color: #f5aa34; }
+.vd_Modal.AlertOrange .vd_Modal_Box .vd_Modal_Content .vd_Modal_Content_Box { border: 1px solid #e5e9ec; }
+.vd_Modal.AlertGreen .vd_Modal_Box .vd_Modal_Title > span { background: rgba(0, 240, 255, 0.27); color: #fff; }
+.vd_Modal.AlertGreen .vd_Modal_Box .vd_Modal_Title i { color: #37a8af; }
+.vd_Modal.AlertGreen .vd_Modal_Box .vd_Modal_Content .vd_Modal_Content_Box { border: 0 0; }
+.ModalbuttonStyle { margin-top: 10px; height: 35px; line-height: 35px; display: block; padding: 0 20px; color: #fff; background: #00a4d8; border: 1px solid transparent; font-weight: bold; -webkit-transition: all 300ms ease; -moz-transition: all 300ms ease; -ms-transition: all 300ms ease; -o-transition: all 300ms ease; transition: all 300ms ease; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; }
+.ModalbuttonStyle:hover { color: #00a4d8; border: 1px solid #00a4d8; background: #fff; }
+.vd_Modal.AlertGreen .ModalbuttonStyle { background: #00a4d8; color: #fff; }
+.vd_Modal.AlertGreen .ModalbuttonStyle:hover { background: #fff; color: #00a4d8; border: 1px solid #00a4d8; }
+.vd_Modal.AlertRed .ModalbuttonStyle { background: #e60000; color: #fff; }
+.vd_Modal.AlertRed .ModalbuttonStyle:hover { background: #fff; color: #e60000; border: 1px solid #e60000; }
+.vd_Modal.AlertOrange .ModalbuttonStyle { background: #ff9600; color: #fff; }
+.vd_Modal.AlertOrange .ModalbuttonStyle:hover { background: #fff; color: #ff9600; border: 1px solid #ff9600; }
+.vd_Modal .MBS_ColorGreen { background: #00a4d8 !important; color: #fff !important; }
+.vd_Modal .MBS_ColorGreen:hover { background: #fff !important; color: #00a4d8 !important; border: 1px solid #00a4d8 !important; }
+.vd_Modal .modalPictureView { display: block; width: 294px; overflow: hidden; -webkit-border-bottom-right-radius: 5px; -webkit-border-bottom-left-radius: 5px; -moz-border-radius-bottomright: 5px; -moz-border-radius-bottomleft: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; }
+.vd_Modal .modalPictureView img { max-width: 294px; min-width: 294px; float: left; }
+.vd_Modal .modalPictureView:after { content: ""; display: block; clear: both; }
+.vd_Modal_Box .ModalCloseButton { width: 28px; height: 28px; position: absolute; top: 12px; right: 20px; transition: none; -webkit-transition: none; -moz-transition: none; -o-transition: none; -webkit-border-radius: 4px; -moz-border-radius: 4px; border-radius: 4px; }
+.vd_Modal_Box .ModalCloseButton:hover { background-color: rgba(255, 255, 255, 0.20); }
+.vd_Modal_Box .ModalCloseButton:before { content: "\f00d"; text-align: center; display: block; color: #fff; margin-top: 6px; }
+.vd_Modal .modalImagePreview { display: block; overflow: hidden; -webkit-border-bottom-right-radius: 5px; -webkit-border-bottom-left-radius: 5px; -moz-border-radius-bottomright: 5px; -moz-border-radius-bottomleft: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; }
+.vd_Modal .modalImagePreview img { max-width: 100%; min-width: 100%; float: left; }
+.vd_Modal .modalImagePreview:after { content: ""; display: block; clear: both; }

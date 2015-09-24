@@ -1,0 +1,137 @@
+﻿@{
+    ViewBag.Title = "Ürünler";
+    Layout = "~/Areas/Account/Views/Shared/_Layout.cshtml";
+}
+<div class="tabbable">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#tab1" data-toggle="tab">Aktif</a></li>
+        <li><a href="#tab2" data-toggle="tab">Pasif</a></li>
+        <li><a href="#tab3" data-toggle="tab">Silinen</a></li>
+        <li><a href="#tab4" data-toggle="tab">Yeni Ürün Ekle</a></li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active" id="tab1">
+            <div class="panel-content pagination2 table-responsive">
+                <table class="table table-hover filter-head" id="ActiveProducts" data-completed="false">
+                    <thead>
+                        <tr>
+                            <th>Resim</th>
+                            <th><span class="float-left">Ürün Adı</span></th>
+                            <th>Stok</th>
+                            <th><span style="float:right">İşlem</span></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <div class="modal fade" id="modal-responsive" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="icons-office-52"></i></button>
+                                <h4 class="modal-title"><strong>İçerik</strong></h4>
+                            </div>
+                            <div class="modal-body">
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane" id="tab2">
+            <p>Howdy, I'm in Section 2.</p>
+        </div>
+        <div class="tab-pane" id="tab3">
+            <p>Howdy, I'm in Section 2.</p>
+        </div>
+        <div class="tab-pane" id="tab4">
+            <div class="row">
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="field-2" class="control-label">Ürün Adı *</label>
+                        <input type="text" class="form-control required" data-null-error-msg="Boş Bırakılamaz" name="Title" placeholder="Ürün Adı">
+                    </div>
+                </div>
+                <div class="col-md-6">
+
+                    <label for="field-2" class="control-label">Kategori *</label>
+                    <div class="form-group">
+                        <select style="width:100%;" name="CategoryID" >
+                            <option class="first" value="">Seçiniz</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="clearfix"></div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="field-2" class="control-label">İçindekiler</label>
+                        <textarea class="form-control" name="Ingredients" placeholder="İçindekiler"></textarea>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="field-2" class="control-label">Maliyet</label>
+                        <input type="text" class="form-control numeric money" name="Cost" placeholder="Maliyet">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="field-2" class="control-label">Fiyat *</label>
+                        <input type="text" class="form-control numeric money" name="Price" placeholder="Fiyat">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="field-2" class="control-label">Stok</label>
+                        <input type="text" class="form-control numeric" name="Stock" placeholder="Stok">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="field-2" class="control-label">Kritik Stok</label>
+                        <input type="text" class="form-control numeric" name="CriticalStock" placeholder="Kritik Stok">
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <p>
+                            <strong>Ürün Resimleri</strong>
+                        </p>
+                        <div class="input-group">
+                            <span class="input-group-btn">
+                                <span class="btn btn-primary btn-file">
+                                    Gözat… <input type="file" name="file" multiple="">
+                                </span>
+                            </span>
+                            <input type="text" value="Dosya(lar) seçiniz..." name="FileNames" class="form-control" readonly="">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <a class="btn btn-large btn-success addFeature" href="javascript:openFeatureArea()">Ürün Özellikleri Ekle</a>
+                    </div>
+                    <div class="form-group features">
+                     
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <a href="#" id="productAdd" class="btn btn-primary"><i style="margin-right:10px;" class="fa fa-plus"></i><span>Ekle</span></a>
+                        </div>
+                    </div>
+                </div>
+
+                    </div>
+                </div>
+            </div>
+            @section scripts{
+                <script src="~/Areas/Account/Assets/js/product.js"></script>
+            }
