@@ -123,7 +123,9 @@ namespace Bonappio.Areas.Account.Controllers
                      Name = x.Name,
                      IsActive = x.IsActive,
                      Stock = x.Stock,
-                     Price = x.Price
+                     OrderCount = x.OrderCount,
+                     Variant = x.Variant,
+                      Price = x.Price
                   }).ToList();
                 //_Context.Cache.Add(CacheKey, lastData, null, System.Web.Caching.Cache.NoAbsoluteExpiration, new TimeSpan(6, 0, 0), System.Web.Caching.CacheItemPriority.Default, null);
             //}
@@ -179,6 +181,11 @@ namespace Bonappio.Areas.Account.Controllers
             /// </summary>
             public string sColumns { get; set; }
             public string pageType { get; set; }
+        }
+        [HttpPost]
+        public void SetAP(int ID, bool AP) {
+            baioEntities db = new baioEntities();
+            db.sp_ProductSetAP(ID, AP);
         }
         [HttpPost]
         public bool SetPageRank(int[] IDs, int firstIndex, int lastIndex

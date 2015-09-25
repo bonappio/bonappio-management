@@ -12,31 +12,22 @@ namespace Bonappio.Areas.Account.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Order
+    public partial class Authority
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Order()
+        public Authority()
         {
-            this.OrderProduct = new HashSet<OrderProduct>();
+            this.Admin = new HashSet<Admin>();
         }
     
         public int ID { get; set; }
         public Nullable<System.DateTime> Date { get; set; }
         public Nullable<bool> IsDelete { get; set; }
         public Nullable<bool> IsActive { get; set; }
-        public Nullable<int> FirmID { get; set; }
-        public Nullable<int> TableID { get; set; }
-        public Nullable<int> StatusID { get; set; }
-        public Nullable<System.DateTime> ServingDate { get; set; }
-        public Nullable<System.DateTime> StartDate { get; set; }
-        public Nullable<System.DateTime> EndDate { get; set; }
-        public Nullable<int> UserID { get; set; }
+        public string Name { get; set; }
         public string Description { get; set; }
     
-        public virtual Firm Firm { get; set; }
-        public virtual Status Status { get; set; }
-        public virtual Table Table { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<OrderProduct> OrderProduct { get; set; }
+        public virtual ICollection<Admin> Admin { get; set; }
     }
 }

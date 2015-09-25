@@ -27,6 +27,8 @@ namespace Bonappio.Areas.Account.Models
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<Admin> Admin { get; set; }
+        public virtual DbSet<Authority> Authority { get; set; }
         public virtual DbSet<Category> Category { get; set; }
         public virtual DbSet<Firm> Firm { get; set; }
         public virtual DbSet<Images> Images { get; set; }
@@ -42,6 +44,218 @@ namespace Bonappio.Areas.Account.Models
         public virtual DbSet<Table> Table { get; set; }
         public virtual DbSet<User> User { get; set; }
         public virtual DbSet<UserTable> UserTable { get; set; }
+    
+        public virtual ObjectResult<Nullable<int>> sp_AdminAdd(Nullable<int> firmID, string name, string surname, string email, string username, string password, string photo, Nullable<System.DateTime> lastLoginDate, Nullable<bool> isManager)
+        {
+            var firmIDParameter = firmID.HasValue ?
+                new ObjectParameter("FirmID", firmID) :
+                new ObjectParameter("FirmID", typeof(int));
+    
+            var nameParameter = name != null ?
+                new ObjectParameter("Name", name) :
+                new ObjectParameter("Name", typeof(string));
+    
+            var surnameParameter = surname != null ?
+                new ObjectParameter("Surname", surname) :
+                new ObjectParameter("Surname", typeof(string));
+    
+            var emailParameter = email != null ?
+                new ObjectParameter("Email", email) :
+                new ObjectParameter("Email", typeof(string));
+    
+            var usernameParameter = username != null ?
+                new ObjectParameter("Username", username) :
+                new ObjectParameter("Username", typeof(string));
+    
+            var passwordParameter = password != null ?
+                new ObjectParameter("Password", password) :
+                new ObjectParameter("Password", typeof(string));
+    
+            var photoParameter = photo != null ?
+                new ObjectParameter("Photo", photo) :
+                new ObjectParameter("Photo", typeof(string));
+    
+            var lastLoginDateParameter = lastLoginDate.HasValue ?
+                new ObjectParameter("LastLoginDate", lastLoginDate) :
+                new ObjectParameter("LastLoginDate", typeof(System.DateTime));
+    
+            var isManagerParameter = isManager.HasValue ?
+                new ObjectParameter("IsManager", isManager) :
+                new ObjectParameter("IsManager", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("sp_AdminAdd", firmIDParameter, nameParameter, surnameParameter, emailParameter, usernameParameter, passwordParameter, photoParameter, lastLoginDateParameter, isManagerParameter);
+        }
+    
+        public virtual int sp_AdminAuthorityAdd(Nullable<int> adminID, Nullable<int> authorityID)
+        {
+            var adminIDParameter = adminID.HasValue ?
+                new ObjectParameter("AdminID", adminID) :
+                new ObjectParameter("AdminID", typeof(int));
+    
+            var authorityIDParameter = authorityID.HasValue ?
+                new ObjectParameter("AuthorityID", authorityID) :
+                new ObjectParameter("AuthorityID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_AdminAuthorityAdd", adminIDParameter, authorityIDParameter);
+        }
+    
+        public virtual int sp_AdminAuthorityDelete(Nullable<int> adminID)
+        {
+            var adminIDParameter = adminID.HasValue ?
+                new ObjectParameter("AdminID", adminID) :
+                new ObjectParameter("AdminID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_AdminAuthorityDelete", adminIDParameter);
+        }
+    
+        public virtual int sp_AdminDeleteRecover(Nullable<int> iD, Nullable<bool> isDelete)
+        {
+            var iDParameter = iD.HasValue ?
+                new ObjectParameter("ID", iD) :
+                new ObjectParameter("ID", typeof(int));
+    
+            var isDeleteParameter = isDelete.HasValue ?
+                new ObjectParameter("IsDelete", isDelete) :
+                new ObjectParameter("IsDelete", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_AdminDeleteRecover", iDParameter, isDeleteParameter);
+        }
+    
+        public virtual ObjectResult<sp_AdminGet_Result> sp_AdminGet(Nullable<int> iD)
+        {
+            var iDParameter = iD.HasValue ?
+                new ObjectParameter("ID", iD) :
+                new ObjectParameter("ID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_AdminGet_Result>("sp_AdminGet", iDParameter);
+        }
+    
+        public virtual ObjectResult<sp_AdminGetAll_Result> sp_AdminGetAll(Nullable<int> firmID, Nullable<bool> isDelete)
+        {
+            var firmIDParameter = firmID.HasValue ?
+                new ObjectParameter("FirmID", firmID) :
+                new ObjectParameter("FirmID", typeof(int));
+    
+            var isDeleteParameter = isDelete.HasValue ?
+                new ObjectParameter("IsDelete", isDelete) :
+                new ObjectParameter("IsDelete", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_AdminGetAll_Result>("sp_AdminGetAll", firmIDParameter, isDeleteParameter);
+        }
+    
+        public virtual ObjectResult<sp_AdminGetAllbyPaging_Result> sp_AdminGetAllbyPaging(Nullable<int> page, Nullable<int> pageSize, Nullable<int> firmID, Nullable<bool> isDelete)
+        {
+            var pageParameter = page.HasValue ?
+                new ObjectParameter("Page", page) :
+                new ObjectParameter("Page", typeof(int));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var firmIDParameter = firmID.HasValue ?
+                new ObjectParameter("FirmID", firmID) :
+                new ObjectParameter("FirmID", typeof(int));
+    
+            var isDeleteParameter = isDelete.HasValue ?
+                new ObjectParameter("IsDelete", isDelete) :
+                new ObjectParameter("IsDelete", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_AdminGetAllbyPaging_Result>("sp_AdminGetAllbyPaging", pageParameter, pageSizeParameter, firmIDParameter, isDeleteParameter);
+        }
+    
+        public virtual ObjectResult<sp_AdminIsExists_Result> sp_AdminIsExists(Nullable<int> firmID, string username, string password)
+        {
+            var firmIDParameter = firmID.HasValue ?
+                new ObjectParameter("FirmID", firmID) :
+                new ObjectParameter("FirmID", typeof(int));
+    
+            var usernameParameter = username != null ?
+                new ObjectParameter("Username", username) :
+                new ObjectParameter("Username", typeof(string));
+    
+            var passwordParameter = password != null ?
+                new ObjectParameter("Password", password) :
+                new ObjectParameter("Password", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_AdminIsExists_Result>("sp_AdminIsExists", firmIDParameter, usernameParameter, passwordParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<int>> sp_AdminPasswordEquals(Nullable<int> iD, string password)
+        {
+            var iDParameter = iD.HasValue ?
+                new ObjectParameter("ID", iD) :
+                new ObjectParameter("ID", typeof(int));
+    
+            var passwordParameter = password != null ?
+                new ObjectParameter("Password", password) :
+                new ObjectParameter("Password", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("sp_AdminPasswordEquals", iDParameter, passwordParameter);
+        }
+    
+        public virtual int sp_AdminPasswordUpdate(Nullable<int> iD, string password)
+        {
+            var iDParameter = iD.HasValue ?
+                new ObjectParameter("ID", iD) :
+                new ObjectParameter("ID", typeof(int));
+    
+            var passwordParameter = password != null ?
+                new ObjectParameter("Password", password) :
+                new ObjectParameter("Password", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_AdminPasswordUpdate", iDParameter, passwordParameter);
+        }
+    
+        public virtual int sp_AdminUpdate(Nullable<int> iD, string name, string surname, string email, string username, string password)
+        {
+            var iDParameter = iD.HasValue ?
+                new ObjectParameter("ID", iD) :
+                new ObjectParameter("ID", typeof(int));
+    
+            var nameParameter = name != null ?
+                new ObjectParameter("Name", name) :
+                new ObjectParameter("Name", typeof(string));
+    
+            var surnameParameter = surname != null ?
+                new ObjectParameter("Surname", surname) :
+                new ObjectParameter("Surname", typeof(string));
+    
+            var emailParameter = email != null ?
+                new ObjectParameter("Email", email) :
+                new ObjectParameter("Email", typeof(string));
+    
+            var usernameParameter = username != null ?
+                new ObjectParameter("Username", username) :
+                new ObjectParameter("Username", typeof(string));
+    
+            var passwordParameter = password != null ?
+                new ObjectParameter("Password", password) :
+                new ObjectParameter("Password", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_AdminUpdate", iDParameter, nameParameter, surnameParameter, emailParameter, usernameParameter, passwordParameter);
+        }
+    
+        public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            var versionParameter = version.HasValue ?
+                new ObjectParameter("version", version) :
+                new ObjectParameter("version", typeof(int));
+    
+            var definitionParameter = definition != null ?
+                new ObjectParameter("definition", definition) :
+                new ObjectParameter("definition", typeof(byte[]));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_alterdiagram", diagramnameParameter, owner_idParameter, versionParameter, definitionParameter);
+        }
     
         public virtual ObjectResult<Nullable<int>> sp_CategoryAdd(Nullable<int> firmID, Nullable<int> categoryID, string name, string type, string rank)
         {
@@ -183,6 +397,40 @@ namespace Bonappio.Areas.Account.Models
                 new ObjectParameter("Name", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_CategoryUpdate", iDParameter, nameParameter);
+        }
+    
+        public virtual int sp_creatediagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            var versionParameter = version.HasValue ?
+                new ObjectParameter("version", version) :
+                new ObjectParameter("version", typeof(int));
+    
+            var definitionParameter = definition != null ?
+                new ObjectParameter("definition", definition) :
+                new ObjectParameter("definition", typeof(byte[]));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_creatediagram", diagramnameParameter, owner_idParameter, versionParameter, definitionParameter);
+        }
+    
+        public virtual int sp_dropdiagram(string diagramname, Nullable<int> owner_id)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_dropdiagram", diagramnameParameter, owner_idParameter);
         }
     
         public virtual ObjectResult<Nullable<int>> sp_FirmAdd(string name, string bossName, string address, string email, string phone, string gSM, Nullable<System.DateTime> cutoffDate, Nullable<int> categoryID, string password, string logo, string mapX, string mapY, string mapAddress)
@@ -399,6 +647,32 @@ namespace Bonappio.Areas.Account.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_FirmUpdate", iDParameter, nameParameter, bossNameParameter, addressParameter, emailParameter, phoneParameter, gSMParameter, cutoffDateParameter, categoryIDParameter, passwordParameter, logoParameter, mapXParameter, mapYParameter, mapAddressParameter);
         }
     
+        public virtual ObjectResult<sp_helpdiagramdefinition_Result> sp_helpdiagramdefinition(string diagramname, Nullable<int> owner_id)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_helpdiagramdefinition_Result>("sp_helpdiagramdefinition", diagramnameParameter, owner_idParameter);
+        }
+    
+        public virtual ObjectResult<sp_helpdiagrams_Result> sp_helpdiagrams(string diagramname, Nullable<int> owner_id)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_helpdiagrams_Result>("sp_helpdiagrams", diagramnameParameter, owner_idParameter);
+        }
+    
         public virtual ObjectResult<string> sp_ImageGetSrc(Nullable<int> iD)
         {
             var iDParameter = iD.HasValue ?
@@ -529,7 +803,7 @@ namespace Bonappio.Areas.Account.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_NotificationSetViewed", iDParameter);
         }
     
-        public virtual ObjectResult<Nullable<int>> sp_OrderAdd(Nullable<int> firmID, Nullable<int> tableID, Nullable<int> statusID, Nullable<System.DateTime> startDate, Nullable<int> userID)
+        public virtual ObjectResult<Nullable<int>> sp_OrderAdd(Nullable<int> firmID, Nullable<int> tableID, Nullable<int> statusID, Nullable<System.DateTime> startDate, Nullable<int> userID, string description)
         {
             var firmIDParameter = firmID.HasValue ?
                 new ObjectParameter("FirmID", firmID) :
@@ -551,7 +825,11 @@ namespace Bonappio.Areas.Account.Models
                 new ObjectParameter("UserID", userID) :
                 new ObjectParameter("UserID", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("sp_OrderAdd", firmIDParameter, tableIDParameter, statusIDParameter, startDateParameter, userIDParameter);
+            var descriptionParameter = description != null ?
+                new ObjectParameter("Description", description) :
+                new ObjectParameter("Description", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("sp_OrderAdd", firmIDParameter, tableIDParameter, statusIDParameter, startDateParameter, userIDParameter, descriptionParameter);
         }
     
         public virtual int sp_OrderDeleteRecover(Nullable<int> iD, Nullable<bool> isDelete)
@@ -831,6 +1109,19 @@ namespace Bonappio.Areas.Account.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_ProductRankControl", iDParameter, rankParameter);
         }
     
+        public virtual int sp_ProductSetAP(Nullable<int> iD, Nullable<bool> isActive)
+        {
+            var iDParameter = iD.HasValue ?
+                new ObjectParameter("ID", iD) :
+                new ObjectParameter("ID", typeof(int));
+    
+            var isActiveParameter = isActive.HasValue ?
+                new ObjectParameter("IsActive", isActive) :
+                new ObjectParameter("IsActive", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_ProductSetAP", iDParameter, isActiveParameter);
+        }
+    
         public virtual int sp_ProductUpdate(Nullable<int> iD, string name, string ingredients, Nullable<decimal> cost, Nullable<decimal> price, Nullable<int> stock, string imageSrc, Nullable<int> criticalStock, Nullable<int> rank)
         {
             var iDParameter = iD.HasValue ?
@@ -870,6 +1161,23 @@ namespace Bonappio.Areas.Account.Models
                 new ObjectParameter("Rank", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_ProductUpdate", iDParameter, nameParameter, ingredientsParameter, costParameter, priceParameter, stockParameter, imageSrcParameter, criticalStockParameter, rankParameter);
+        }
+    
+        public virtual int sp_renamediagram(string diagramname, Nullable<int> owner_id, string new_diagramname)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            var new_diagramnameParameter = new_diagramname != null ?
+                new ObjectParameter("new_diagramname", new_diagramname) :
+                new ObjectParameter("new_diagramname", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_renamediagram", diagramnameParameter, owner_idParameter, new_diagramnameParameter);
         }
     
         public virtual ObjectResult<Nullable<int>> sp_TableAdd(Nullable<int> firmID, string name, string code)
@@ -948,6 +1256,11 @@ namespace Bonappio.Areas.Account.Models
                 new ObjectParameter("Code", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_TableUpdate", iDParameter, nameParameter, codeParameter);
+        }
+    
+        public virtual int sp_upgraddiagrams()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_upgraddiagrams");
         }
     }
 }

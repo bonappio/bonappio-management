@@ -1,0 +1,10 @@
+﻿.tooltip { position: absolute; right: 0; padding: 8px; background: #272f39; color: #fff; z-index: 800; display: block; width: 150px; margin-right: 0px; font-size: 12px; text-align: center; line-height: 14px; -moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px; cursor: pointer;top:-15px !important }
+.tooltip.ttp { top: -55px; margin-right: -60px; width: 110px; }
+.tooltip.hdn { top: -65px; margin-right: -200px; }
+.tooltip:after { content: ''; width: 0; height: 0; border-style: solid; border-width: 6px 6px 0 6px; border-color: #272f39 transparent transparent transparent; position: absolute; z-index: -1; left: 48%; margin-left: -6px; bottom: -6px; }
+.rowIcon .tooltip { width: 100px; top: -52px; margin-right: -55px; }
+.vd-ctn { display: block; float: none !important; width:100%}
+.tooltip2 { position: absolute; right: 100px; top: 5px; padding: 8px; background: #f98c2a; color: #fff; z-index: 800; display: block; width: 170px; font-size: 12px; text-align: center; line-height: 14px; -moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px; cursor: pointer; }
+.tooltip2:after { content: ''; width: 0; height: 0; border-style: solid; border-width: 6px 0 6px 6px; border-color: transparent transparent transparent #f98c2a; position: absolute; z-index: -1; right: -6px; bottom: 10px; }
+.tooltip2.tooltip3 { background: #ed0000; }
+.tooltip2.tooltip3:after { border-color: transparent transparent transparent #ed0000; }

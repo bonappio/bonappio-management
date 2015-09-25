@@ -17,6 +17,7 @@ namespace Bonappio.Areas.Account.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Firm()
         {
+            this.Admin = new HashSet<Admin>();
             this.Category = new HashSet<Category>();
             this.Log = new HashSet<Log>();
             this.Notification = new HashSet<Notification>();
@@ -46,6 +47,8 @@ namespace Bonappio.Areas.Account.Models
         public string MapY { get; set; }
         public string MapAddress { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Admin> Admin { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Category> Category { get; set; }
         public virtual Category Category1 { get; set; }

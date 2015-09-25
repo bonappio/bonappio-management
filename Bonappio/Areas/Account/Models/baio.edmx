@@ -4,7 +4,44 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="baioModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="baioModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Admin">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Date" Type="datetime" />
+          <Property Name="IsDelete" Type="bit" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="FirmID" Type="int" />
+          <Property Name="Name" Type="varchar" MaxLength="150" />
+          <Property Name="Surname" Type="varchar" MaxLength="150" />
+          <Property Name="Email" Type="varchar" MaxLength="150" />
+          <Property Name="Username" Type="varchar" MaxLength="150" />
+          <Property Name="Password" Type="varchar" MaxLength="150" />
+          <Property Name="Photo" Type="varchar" MaxLength="150" />
+          <Property Name="LastLoginDate" Type="datetime" />
+          <Property Name="IsManager" Type="bit" />
+        </EntityType>
+        <EntityType Name="AdminAuthority">
+          <Key>
+            <PropertyRef Name="AdminID" />
+            <PropertyRef Name="AuthorityID" />
+          </Key>
+          <Property Name="AdminID" Type="int" Nullable="false" />
+          <Property Name="AuthorityID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Authority">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Date" Type="datetime" />
+          <Property Name="IsDelete" Type="bit" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="Name" Type="varchar" MaxLength="150" />
+          <Property Name="Description" Type="varchar" MaxLength="1500" />
+        </EntityType>
         <EntityType Name="Category">
           <Key>
             <PropertyRef Name="ID" />
@@ -112,6 +149,7 @@
           <Property Name="StartDate" Type="datetime" />
           <Property Name="EndDate" Type="datetime" />
           <Property Name="UserID" Type="int" />
+          <Property Name="Description" Type="varchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="OrderProduct">
           <Key>
@@ -239,6 +277,42 @@
           <Property Name="CheckInDate" Type="date" />
           <Property Name="CheckOutDate" Type="date" />
         </EntityType>
+        <Association Name="FK_Admin_Firm">
+          <End Role="Firm" Type="Self.Firm" Multiplicity="0..1" />
+          <End Role="Admin" Type="Self.Admin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Firm">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Admin">
+              <PropertyRef Name="FirmID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AdminAuthority_Admin">
+          <End Role="Admin" Type="Self.Admin" Multiplicity="1" />
+          <End Role="AdminAuthority" Type="Self.AdminAuthority" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Admin">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="AdminAuthority">
+              <PropertyRef Name="AdminID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AdminAuthority_Authority">
+          <End Role="Authority" Type="Self.Authority" Multiplicity="1" />
+          <End Role="AdminAuthority" Type="Self.AdminAuthority" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Authority">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="AdminAuthority">
+              <PropertyRef Name="AuthorityID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Category_Category">
           <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
           <End Role="Category1" Type="Self.Category" Multiplicity="*" />
@@ -599,6 +673,69 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+        <Function Name="sp_AdminAdd" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FirmID" Type="int" Mode="In" />
+          <Parameter Name="Name" Type="varchar" Mode="In" />
+          <Parameter Name="Surname" Type="varchar" Mode="In" />
+          <Parameter Name="Email" Type="varchar" Mode="In" />
+          <Parameter Name="Username" Type="varchar" Mode="In" />
+          <Parameter Name="Password" Type="varchar" Mode="In" />
+          <Parameter Name="Photo" Type="varchar" Mode="In" />
+          <Parameter Name="LastLoginDate" Type="datetime" Mode="In" />
+          <Parameter Name="IsManager" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="sp_AdminAuthorityAdd" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="AdminID" Type="int" Mode="In" />
+          <Parameter Name="AuthorityID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_AdminAuthorityDelete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="AdminID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_AdminDeleteRecover" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ID" Type="int" Mode="In" />
+          <Parameter Name="IsDelete" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="sp_AdminGet" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_AdminGetAll" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FirmID" Type="int" Mode="In" />
+          <Parameter Name="IsDelete" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="sp_AdminGetAllbyPaging" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Page" Type="int" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+          <Parameter Name="FirmID" Type="int" Mode="In" />
+          <Parameter Name="IsDelete" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="sp_AdminIsExists" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FirmID" Type="int" Mode="In" />
+          <Parameter Name="Username" Type="varchar" Mode="In" />
+          <Parameter Name="Password" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="sp_AdminPasswordEquals" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ID" Type="int" Mode="In" />
+          <Parameter Name="Password" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="sp_AdminPasswordUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ID" Type="int" Mode="In" />
+          <Parameter Name="Password" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="sp_AdminUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ID" Type="int" Mode="In" />
+          <Parameter Name="Name" Type="varchar" Mode="In" />
+          <Parameter Name="Surname" Type="varchar" Mode="In" />
+          <Parameter Name="Email" Type="varchar" Mode="In" />
+          <Parameter Name="Username" Type="varchar" Mode="In" />
+          <Parameter Name="Password" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
         <Function Name="sp_CategoryAdd" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="FirmID" Type="int" Mode="In" />
           <Parameter Name="CategoryID" Type="int" Mode="In" />
@@ -641,6 +778,16 @@
         <Function Name="sp_CategoryUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ID" Type="int" Mode="In" />
           <Parameter Name="Name" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
         </Function>
         <Function Name="sp_FirmAdd" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Name" Type="varchar" Mode="In" />
@@ -702,6 +849,14 @@
           <Parameter Name="MapY" Type="varchar" Mode="In" />
           <Parameter Name="MapAddress" Type="varchar" Mode="In" />
         </Function>
+        <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
         <Function Name="sp_ImageGetSrc" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ID" Type="int" Mode="In" />
         </Function>
@@ -748,6 +903,7 @@
           <Parameter Name="StatusID" Type="int" Mode="In" />
           <Parameter Name="StartDate" Type="datetime" Mode="In" />
           <Parameter Name="UserID" Type="int" Mode="In" />
+          <Parameter Name="Description" Type="varchar" Mode="In" />
         </Function>
         <Function Name="sp_OrderDeleteRecover" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ID" Type="int" Mode="In" />
@@ -831,6 +987,10 @@
           <Parameter Name="ID" Type="int" Mode="In" />
           <Parameter Name="Rank" Type="int" Mode="In" />
         </Function>
+        <Function Name="sp_ProductSetAP" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ID" Type="int" Mode="In" />
+          <Parameter Name="IsActive" Type="bit" Mode="In" />
+        </Function>
         <Function Name="sp_ProductUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ID" Type="int" Mode="In" />
           <Parameter Name="Name" Type="varchar" Mode="In" />
@@ -841,6 +1001,11 @@
           <Parameter Name="ImageSrc" Type="varchar" Mode="In" />
           <Parameter Name="CriticalStock" Type="int" Mode="In" />
           <Parameter Name="Rank" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
         </Function>
         <Function Name="sp_TableAdd" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="FirmID" Type="int" Mode="In" />
@@ -866,7 +1031,11 @@
           <Parameter Name="Name" Type="varchar" Mode="In" />
           <Parameter Name="Code" Type="char" Mode="In" />
         </Function>
+        <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="baioModelStoreContainer">
+          <EntitySet Name="Admin" EntityType="Self.Admin" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AdminAuthority" EntityType="Self.AdminAuthority" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Authority" EntityType="Self.Authority" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Firm" EntityType="Self.Firm" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FirmImages" EntityType="Self.FirmImages" Schema="dbo" store:Type="Tables" />
@@ -886,6 +1055,18 @@
           <EntitySet Name="UserFavFirm" EntityType="Self.UserFavFirm" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserFavProduct" EntityType="Self.UserFavProduct" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserTable" EntityType="Self.UserTable" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Admin_Firm" Association="Self.FK_Admin_Firm">
+            <End Role="Firm" EntitySet="Firm" />
+            <End Role="Admin" EntitySet="Admin" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AdminAuthority_Admin" Association="Self.FK_AdminAuthority_Admin">
+            <End Role="Admin" EntitySet="Admin" />
+            <End Role="AdminAuthority" EntitySet="AdminAuthority" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AdminAuthority_Authority" Association="Self.FK_AdminAuthority_Authority">
+            <End Role="Authority" EntitySet="Authority" />
+            <End Role="AdminAuthority" EntitySet="AdminAuthority" />
+          </AssociationSet>
           <AssociationSet Name="FK_Category_Category" Association="Self.FK_Category_Category">
             <End Role="Category" EntitySet="Category" />
             <End Role="Category1" EntitySet="Category" />
@@ -1007,10 +1188,43 @@
             <End Role="UserTable" EntitySet="UserTable" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="baioModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Admin">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Date" Type="DateTime" Precision="3" />
+          <Property Name="IsDelete" Type="Boolean" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="FirmID" Type="Int32" />
+          <Property Name="Name" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Surname" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Username" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Photo" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="LastLoginDate" Type="DateTime" Precision="3" />
+          <Property Name="IsManager" Type="Boolean" />
+          <NavigationProperty Name="Firm" Relationship="Self.FK_Admin_Firm" FromRole="Admin" ToRole="Firm" />
+          <NavigationProperty Name="Authority" Relationship="Self.AdminAuthority" FromRole="Admin" ToRole="Authority" />
+        </EntityType>
+        <EntityType Name="Authority">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Date" Type="DateTime" Precision="3" />
+          <Property Name="IsDelete" Type="Boolean" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="Name" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Admin" Relationship="Self.AdminAuthority" FromRole="Authority" ToRole="Admin" />
+        </EntityType>
         <EntityType Name="Category">
           <Key>
             <PropertyRef Name="ID" />
@@ -1051,6 +1265,7 @@
           <Property Name="MapX" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="MapY" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="MapAddress" Type="String" MaxLength="2500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Admin" Relationship="Self.FK_Admin_Firm" FromRole="Firm" ToRole="Admin" />
           <NavigationProperty Name="Category" Relationship="Self.FK_Category_Firm" FromRole="Firm" ToRole="Category" />
           <NavigationProperty Name="Category1" Relationship="Self.FK_Firm_Category" FromRole="Firm" ToRole="Category" />
           <NavigationProperty Name="Log" Relationship="Self.FK_Log_Firm" FromRole="Firm" ToRole="Log" />
@@ -1133,6 +1348,7 @@
           <Property Name="StartDate" Type="DateTime" Precision="3" />
           <Property Name="EndDate" Type="DateTime" Precision="3" />
           <Property Name="UserID" Type="Int32" />
+          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Firm" Relationship="Self.FK_Order_Firm" FromRole="Order" ToRole="Firm" />
           <NavigationProperty Name="Status" Relationship="Self.FK_Order_OrderStatus" FromRole="Order" ToRole="Status" />
           <NavigationProperty Name="Table" Relationship="Self.FK_Order_Table" FromRole="Order" ToRole="Table" />
@@ -1265,6 +1481,18 @@
           <NavigationProperty Name="Table" Relationship="Self.FK_UserTable_Table" FromRole="UserTable" ToRole="Table" />
           <NavigationProperty Name="User" Relationship="Self.FK_UserTable_User" FromRole="UserTable" ToRole="User" />
         </EntityType>
+        <Association Name="FK_Admin_Firm">
+          <End Role="Firm" Type="Self.Firm" Multiplicity="0..1" />
+          <End Role="Admin" Type="Self.Admin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Firm">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Admin">
+              <PropertyRef Name="FirmID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Category_Category">
           <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
           <End Role="Category1" Type="Self.Category" Multiplicity="*" />
@@ -1529,6 +1757,10 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="AdminAuthority">
+          <End Role="Admin" Type="Self.Admin" Multiplicity="*" />
+          <End Role="Authority" Type="Self.Authority" Multiplicity="*" />
+        </Association>
         <Association Name="FirmImages">
           <End Role="Firm" Type="Self.Firm" Multiplicity="*" />
           <End Role="Images" Type="Self.Images" Multiplicity="*" />
@@ -1545,7 +1777,9 @@
           <End Role="Product" Type="Self.Product" Multiplicity="*" />
           <End Role="User" Type="Self.User" Multiplicity="*" />
         </Association>
-        <EntityContainer Name="baioEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="baioEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Admin" EntityType="Self.Admin" />
+          <EntitySet Name="Authority" EntityType="Self.Authority" />
           <EntitySet Name="Category" EntityType="Self.Category" />
           <EntitySet Name="Firm" EntityType="Self.Firm" />
           <EntitySet Name="Images" EntityType="Self.Images" />
@@ -1561,6 +1795,10 @@
           <EntitySet Name="Table" EntityType="Self.Table" />
           <EntitySet Name="User" EntityType="Self.User" />
           <EntitySet Name="UserTable" EntityType="Self.UserTable" />
+          <AssociationSet Name="FK_Admin_Firm" Association="Self.FK_Admin_Firm">
+            <End Role="Firm" EntitySet="Firm" />
+            <End Role="Admin" EntitySet="Admin" />
+          </AssociationSet>
           <AssociationSet Name="FK_Category_Category" Association="Self.FK_Category_Category">
             <End Role="Category" EntitySet="Category" />
             <End Role="Category1" EntitySet="Category" />
@@ -1649,6 +1887,10 @@
             <End Role="User" EntitySet="User" />
             <End Role="UserTable" EntitySet="UserTable" />
           </AssociationSet>
+          <AssociationSet Name="AdminAuthority" Association="Self.AdminAuthority">
+            <End Role="Admin" EntitySet="Admin" />
+            <End Role="Authority" EntitySet="Authority" />
+          </AssociationSet>
           <AssociationSet Name="FirmImages" Association="Self.FirmImages">
             <End Role="Firm" EntitySet="Firm" />
             <End Role="Images" EntitySet="Images" />
@@ -1665,6 +1907,68 @@
             <End Role="Product" EntitySet="Product" />
             <End Role="User" EntitySet="User" />
           </AssociationSet>
+          <FunctionImport Name="sp_AdminAdd" ReturnType="Collection(Int32)">
+            <Parameter Name="FirmID" Mode="In" Type="Int32" />
+            <Parameter Name="Name" Mode="In" Type="String" />
+            <Parameter Name="Surname" Mode="In" Type="String" />
+            <Parameter Name="Email" Mode="In" Type="String" />
+            <Parameter Name="Username" Mode="In" Type="String" />
+            <Parameter Name="Password" Mode="In" Type="String" />
+            <Parameter Name="Photo" Mode="In" Type="String" />
+            <Parameter Name="LastLoginDate" Mode="In" Type="DateTime" />
+            <Parameter Name="IsManager" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="sp_AdminAuthorityAdd">
+            <Parameter Name="AdminID" Mode="In" Type="Int32" />
+            <Parameter Name="AuthorityID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_AdminAuthorityDelete">
+            <Parameter Name="AdminID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_AdminDeleteRecover">
+            <Parameter Name="ID" Mode="In" Type="Int32" />
+            <Parameter Name="IsDelete" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="sp_AdminGet" ReturnType="Collection(baioModel.sp_AdminGet_Result)">
+            <Parameter Name="ID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_AdminGetAll" ReturnType="Collection(baioModel.sp_AdminGetAll_Result)">
+            <Parameter Name="FirmID" Mode="In" Type="Int32" />
+            <Parameter Name="IsDelete" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="sp_AdminGetAllbyPaging" ReturnType="Collection(baioModel.sp_AdminGetAllbyPaging_Result)">
+            <Parameter Name="Page" Mode="In" Type="Int32" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="FirmID" Mode="In" Type="Int32" />
+            <Parameter Name="IsDelete" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="sp_AdminIsExists" ReturnType="Collection(baioModel.sp_AdminIsExists_Result)">
+            <Parameter Name="FirmID" Mode="In" Type="Int32" />
+            <Parameter Name="Username" Mode="In" Type="String" />
+            <Parameter Name="Password" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_AdminPasswordEquals" ReturnType="Collection(Int32)">
+            <Parameter Name="ID" Mode="In" Type="Int32" />
+            <Parameter Name="Password" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_AdminPasswordUpdate">
+            <Parameter Name="ID" Mode="In" Type="Int32" />
+            <Parameter Name="Password" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_AdminUpdate">
+            <Parameter Name="ID" Mode="In" Type="Int32" />
+            <Parameter Name="Name" Mode="In" Type="String" />
+            <Parameter Name="Surname" Mode="In" Type="String" />
+            <Parameter Name="Email" Mode="In" Type="String" />
+            <Parameter Name="Username" Mode="In" Type="String" />
+            <Parameter Name="Password" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_alterdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
           <FunctionImport Name="sp_CategoryAdd" ReturnType="Collection(Int32)">
             <Parameter Name="FirmID" Mode="In" Type="Int32" />
             <Parameter Name="CategoryID" Mode="In" Type="Int32" />
@@ -1673,13 +1977,13 @@
             <Parameter Name="Rank" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_CategoryDelete">
-          <Parameter Name="ID" Mode="In" Type="Int32" />
+            <Parameter Name="ID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_CategoryDestroy">
-          <Parameter Name="ID" Mode="In" Type="Int32" />
+            <Parameter Name="ID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_CategoryGet" ReturnType="Collection(baioModel.sp_CategoryGet_Result)">
-          <Parameter Name="ID" Mode="In" Type="Int32" />
+            <Parameter Name="ID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_CategoryGetAll" ReturnType="Collection(baioModel.sp_CategoryGetAll_Result)">
             <Parameter Name="FirmID" Mode="In" Type="Int32" />
@@ -1702,11 +2006,21 @@
             <Parameter Name="Rank" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_CategoryRecover">
-          <Parameter Name="ID" Mode="In" Type="Int32" />
+            <Parameter Name="ID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_CategoryUpdate">
             <Parameter Name="ID" Mode="In" Type="Int32" />
             <Parameter Name="Name" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_creatediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_dropdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_FirmAdd" ReturnType="Collection(Int32)">
             <Parameter Name="Name" Mode="In" Type="String" />
@@ -1728,10 +2042,10 @@
             <Parameter Name="IsDelete" Mode="In" Type="Boolean" />
           </FunctionImport>
           <FunctionImport Name="sp_FirmDestroy">
-          <Parameter Name="ID" Mode="In" Type="Int32" />
+            <Parameter Name="ID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_FirmGet" ReturnType="Collection(baioModel.sp_FirmGet_Result)">
-          <Parameter Name="ID" Mode="In" Type="Int32" />
+            <Parameter Name="ID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_FirmGetAll" ReturnType="Collection(baioModel.sp_FirmGetAll_Result)" />
           <FunctionImport Name="sp_FirmGetAllbyPaging" ReturnType="Collection(baioModel.sp_FirmGetAllbyPaging_Result)">
@@ -1768,8 +2082,16 @@
             <Parameter Name="MapY" Mode="In" Type="String" />
             <Parameter Name="MapAddress" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(baioModel.sp_helpdiagramdefinition_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(baioModel.sp_helpdiagrams_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
           <FunctionImport Name="sp_ImageGetSrc" ReturnType="Collection(String)">
-          <Parameter Name="ID" Mode="In" Type="Int32" />
+            <Parameter Name="ID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_ImagesAdd" ReturnType="Collection(Int32)">
             <Parameter Name="Src" Mode="In" Type="String" />
@@ -1781,7 +2103,7 @@
             <Parameter Name="IsDelete" Mode="In" Type="Boolean" />
           </FunctionImport>
           <FunctionImport Name="sp_ImagesGet" ReturnType="Collection(baioModel.sp_ImagesGet_Result)">
-          <Parameter Name="ID" Mode="In" Type="Int32" />
+            <Parameter Name="ID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_ImageSrcUpdate">
             <Parameter Name="ID" Mode="In" Type="Int32" />
@@ -1794,7 +2116,7 @@
             <Parameter Name="UserID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_NotificationDelete">
-          <Parameter Name="ID" Mode="In" Type="Int32" />
+            <Parameter Name="ID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_NotificationGetAllbyPaging" ReturnType="Collection(baioModel.sp_NotificationGetAllbyPaging_Result)">
             <Parameter Name="FirmID" Mode="In" Type="Int32" />
@@ -1803,10 +2125,10 @@
             <Parameter Name="PageSize" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_NotificationSetReaded">
-          <Parameter Name="ID" Mode="In" Type="Int32" />
+            <Parameter Name="ID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_NotificationSetViewed">
-          <Parameter Name="ID" Mode="In" Type="Int32" />
+            <Parameter Name="ID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_OrderAdd" ReturnType="Collection(Int32)">
             <Parameter Name="FirmID" Mode="In" Type="Int32" />
@@ -1814,6 +2136,7 @@
             <Parameter Name="StatusID" Mode="In" Type="Int32" />
             <Parameter Name="StartDate" Mode="In" Type="DateTime" />
             <Parameter Name="UserID" Mode="In" Type="Int32" />
+            <Parameter Name="Description" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_OrderDeleteRecover">
             <Parameter Name="ID" Mode="In" Type="Int32" />
@@ -1833,10 +2156,10 @@
             <Parameter Name="Quantity" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_OrderProductDelete">
-          <Parameter Name="OrderID" Mode="In" Type="Int32" />
+            <Parameter Name="OrderID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_OrderProductsGet" ReturnType="Collection(baioModel.sp_OrderProductsGet_Result)">
-          <Parameter Name="OrderID" Mode="In" Type="Int32" />
+            <Parameter Name="OrderID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_OrderSetStatus">
             <Parameter Name="ID" Mode="In" Type="Int32" />
@@ -1858,7 +2181,7 @@
             <Parameter Name="IsDelete" Mode="In" Type="Boolean" />
           </FunctionImport>
           <FunctionImport Name="sp_ProductDestroy">
-          <Parameter Name="ID" Mode="In" Type="Int32" />
+            <Parameter Name="ID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_ProductFeatureAdd" ReturnType="Collection(Int32)">
             <Parameter Name="FirmID" Mode="In" Type="Int32" />
@@ -1867,7 +2190,7 @@
             <Parameter Name="PriceDifference" Mode="In" Type="Decimal" />
           </FunctionImport>
           <FunctionImport Name="sp_ProductGet" ReturnType="Collection(baioModel.sp_ProductGet_Result)">
-          <Parameter Name="ID" Mode="In" Type="Int32" />
+            <Parameter Name="ID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_ProductGetAllbyPaging" ReturnType="Collection(baioModel.sp_ProductGetAllbyPaging_Result)">
             <Parameter Name="Page" Mode="In" Type="Int32" />
@@ -1897,6 +2220,10 @@
             <Parameter Name="ID" Mode="In" Type="Int32" />
             <Parameter Name="Rank" Mode="In" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="sp_ProductSetAP">
+            <Parameter Name="ID" Mode="In" Type="Int32" />
+            <Parameter Name="IsActive" Mode="In" Type="Boolean" />
+          </FunctionImport>
           <FunctionImport Name="sp_ProductUpdate">
             <Parameter Name="ID" Mode="In" Type="Int32" />
             <Parameter Name="Name" Mode="In" Type="String" />
@@ -1908,6 +2235,11 @@
             <Parameter Name="CriticalStock" Mode="In" Type="Int32" />
             <Parameter Name="Rank" Mode="In" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="sp_renamediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="new_diagramname" Mode="In" Type="String" />
+          </FunctionImport>
           <FunctionImport Name="sp_TableAdd" ReturnType="Collection(Int32)">
             <Parameter Name="FirmID" Mode="In" Type="Int32" />
             <Parameter Name="Name" Mode="In" Type="String" />
@@ -1918,10 +2250,10 @@
             <Parameter Name="IsDelete" Mode="In" Type="Boolean" />
           </FunctionImport>
           <FunctionImport Name="sp_TableGet" ReturnType="Collection(baioModel.sp_TableGet_Result)">
-          <Parameter Name="ID" Mode="In" Type="Int32" />
+            <Parameter Name="ID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_TableGetAll" ReturnType="Collection(baioModel.sp_TableGetAll_Result)">
-          <Parameter Name="FirmID" Mode="In" Type="Int32" />
+            <Parameter Name="FirmID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_TableSetStatus">
             <Parameter Name="ID" Mode="In" Type="Int32" />
@@ -1932,7 +2264,70 @@
             <Parameter Name="Name" Mode="In" Type="String" />
             <Parameter Name="Code" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="sp_upgraddiagrams" />
         </EntityContainer>
+        <ComplexType Name="sp_AdminGet_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="DateTime" Name="Date" Nullable="true" Precision="23" />
+          <Property Type="Boolean" Name="IsDelete" Nullable="true" />
+          <Property Type="Boolean" Name="IsActive" Nullable="true" />
+          <Property Type="Int32" Name="FirmID" Nullable="true" />
+          <Property Type="String" Name="Name" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="Surname" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="Email" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="Username" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="Password" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="Photo" Nullable="true" MaxLength="150" />
+          <Property Type="DateTime" Name="LastLoginDate" Nullable="true" Precision="23" />
+          <Property Type="Boolean" Name="IsManager" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_AdminGetAll_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="DateTime" Name="Date" Nullable="true" Precision="23" />
+          <Property Type="Boolean" Name="IsDelete" Nullable="true" />
+          <Property Type="Boolean" Name="IsActive" Nullable="true" />
+          <Property Type="Int32" Name="FirmID" Nullable="true" />
+          <Property Type="String" Name="Name" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="Surname" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="Email" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="Username" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="Password" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="Photo" Nullable="true" MaxLength="150" />
+          <Property Type="DateTime" Name="LastLoginDate" Nullable="true" Precision="23" />
+          <Property Type="Boolean" Name="IsManager" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_AdminGetAllbyPaging_Result">
+          <Property Type="Int64" Name="RN" Nullable="true" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="DateTime" Name="Date" Nullable="true" Precision="23" />
+          <Property Type="Boolean" Name="IsDelete" Nullable="true" />
+          <Property Type="Boolean" Name="IsActive" Nullable="true" />
+          <Property Type="Int32" Name="FirmID" Nullable="true" />
+          <Property Type="String" Name="Name" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="Surname" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="Email" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="Username" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="Password" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="Photo" Nullable="true" MaxLength="150" />
+          <Property Type="DateTime" Name="LastLoginDate" Nullable="true" Precision="23" />
+          <Property Type="Boolean" Name="IsManager" Nullable="true" />
+          <Property Type="Int32" Name="Total" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_AdminIsExists_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="DateTime" Name="Date" Nullable="true" Precision="23" />
+          <Property Type="Boolean" Name="IsDelete" Nullable="true" />
+          <Property Type="Boolean" Name="IsActive" Nullable="true" />
+          <Property Type="Int32" Name="FirmID" Nullable="true" />
+          <Property Type="String" Name="Name" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="Surname" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="Email" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="Username" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="Password" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="Photo" Nullable="true" MaxLength="150" />
+          <Property Type="DateTime" Name="LastLoginDate" Nullable="true" Precision="23" />
+          <Property Type="Boolean" Name="IsManager" Nullable="true" />
+        </ComplexType>
         <ComplexType Name="sp_CategoryGet_Result">
           <Property Type="Int32" Name="ID" Nullable="false" />
           <Property Type="DateTime" Name="Date" Nullable="true" Precision="23" />
@@ -2004,6 +2399,17 @@
           <Property Type="String" Name="Name" Nullable="true" MaxLength="500" />
           <Property Type="Int32" Name="Total" Nullable="true" />
         </ComplexType>
+        <ComplexType Name="sp_helpdiagramdefinition_Result">
+          <Property Type="Int32" Name="version" Nullable="true" />
+          <Property Type="Binary" Name="definition" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagrams_Result">
+          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+          <Property Type="Int32" Name="OwnerID" Nullable="false" />
+        </ComplexType>
         <ComplexType Name="sp_ImagesGet_Result">
           <Property Type="Int32" Name="ID" Nullable="false" />
           <Property Type="DateTime" Name="Date" Nullable="true" Precision="23" />
@@ -2060,6 +2466,8 @@
           <Property Type="Int32" Name="ID" Nullable="false" />
           <Property Type="String" Name="Name" Nullable="true" MaxLength="500" />
           <Property Type="Boolean" Name="IsActive" Nullable="true" />
+          <Property Type="Int32" Name="OrderCount" Nullable="true" />
+          <Property Type="Int32" Name="Variant" Nullable="true" />
           <Property Type="Int32" Name="Stock" Nullable="true" />
           <Property Type="Decimal" Name="Price" Nullable="true" Precision="18" Scale="5" />
           <Property Type="String" Name="ImageSrc" Nullable="true" MaxLength="250" />
@@ -2091,7 +2499,38 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="baioModelStoreContainer" CdmEntityContainer="baioEntities">
+        <EntityContainerMapping StorageEntityContainer="baioModelStoreContainer" CdmEntityContainer="baioEntities1">
+          <EntitySetMapping Name="Admin">
+            <EntityTypeMapping TypeName="baioModel.Admin">
+              <MappingFragment StoreEntitySet="Admin">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="FirmID" ColumnName="FirmID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Surname" ColumnName="Surname" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
+                <ScalarProperty Name="LastLoginDate" ColumnName="LastLoginDate" />
+                <ScalarProperty Name="IsManager" ColumnName="IsManager" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Authority">
+            <EntityTypeMapping TypeName="baioModel.Authority">
+              <MappingFragment StoreEntitySet="Authority">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Category">
             <EntityTypeMapping TypeName="baioModel.Category">
               <MappingFragment StoreEntitySet="Category">
@@ -2196,6 +2635,7 @@
                 <ScalarProperty Name="StartDate" ColumnName="StartDate" />
                 <ScalarProperty Name="EndDate" ColumnName="EndDate" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2309,6 +2749,14 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <AssociationSetMapping Name="AdminAuthority" TypeName="baioModel.AdminAuthority" StoreEntitySet="AdminAuthority">
+            <EndProperty Name="Admin">
+              <ScalarProperty Name="ID" ColumnName="AdminID" />
+            </EndProperty>
+            <EndProperty Name="Authority">
+              <ScalarProperty Name="ID" ColumnName="AuthorityID" />
+            </EndProperty>
+          </AssociationSetMapping>
           <AssociationSetMapping Name="FirmImages" TypeName="baioModel.FirmImages" StoreEntitySet="FirmImages">
             <EndProperty Name="Firm">
               <ScalarProperty Name="ID" ColumnName="FirmID" />
@@ -2341,6 +2789,92 @@
               <ScalarProperty Name="ID" ColumnName="UserID" />
             </EndProperty>
           </AssociationSetMapping>
+          <FunctionImportMapping FunctionImportName="sp_AdminAdd" FunctionName="baioModel.Store.sp_AdminAdd" />
+          <FunctionImportMapping FunctionImportName="sp_AdminAuthorityAdd" FunctionName="baioModel.Store.sp_AdminAuthorityAdd" />
+          <FunctionImportMapping FunctionImportName="sp_AdminAuthorityDelete" FunctionName="baioModel.Store.sp_AdminAuthorityDelete" />
+          <FunctionImportMapping FunctionImportName="sp_AdminDeleteRecover" FunctionName="baioModel.Store.sp_AdminDeleteRecover" />
+          <FunctionImportMapping FunctionImportName="sp_AdminGet" FunctionName="baioModel.Store.sp_AdminGet">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="baioModel.sp_AdminGet_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="FirmID" ColumnName="FirmID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Surname" ColumnName="Surname" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
+                <ScalarProperty Name="LastLoginDate" ColumnName="LastLoginDate" />
+                <ScalarProperty Name="IsManager" ColumnName="IsManager" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_AdminGetAll" FunctionName="baioModel.Store.sp_AdminGetAll">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="baioModel.sp_AdminGetAll_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="FirmID" ColumnName="FirmID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Surname" ColumnName="Surname" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
+                <ScalarProperty Name="LastLoginDate" ColumnName="LastLoginDate" />
+                <ScalarProperty Name="IsManager" ColumnName="IsManager" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_AdminGetAllbyPaging" FunctionName="baioModel.Store.sp_AdminGetAllbyPaging">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="baioModel.sp_AdminGetAllbyPaging_Result">
+                <ScalarProperty Name="RN" ColumnName="RN" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="FirmID" ColumnName="FirmID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Surname" ColumnName="Surname" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
+                <ScalarProperty Name="LastLoginDate" ColumnName="LastLoginDate" />
+                <ScalarProperty Name="IsManager" ColumnName="IsManager" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_AdminIsExists" FunctionName="baioModel.Store.sp_AdminIsExists">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="baioModel.sp_AdminIsExists_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="FirmID" ColumnName="FirmID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Surname" ColumnName="Surname" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
+                <ScalarProperty Name="LastLoginDate" ColumnName="LastLoginDate" />
+                <ScalarProperty Name="IsManager" ColumnName="IsManager" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_AdminPasswordEquals" FunctionName="baioModel.Store.sp_AdminPasswordEquals" />
+          <FunctionImportMapping FunctionImportName="sp_AdminPasswordUpdate" FunctionName="baioModel.Store.sp_AdminPasswordUpdate" />
+          <FunctionImportMapping FunctionImportName="sp_AdminUpdate" FunctionName="baioModel.Store.sp_AdminUpdate" />
+          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="baioModel.Store.sp_alterdiagram" />
           <FunctionImportMapping FunctionImportName="sp_CategoryAdd" FunctionName="baioModel.Store.sp_CategoryAdd" />
           <FunctionImportMapping FunctionImportName="sp_CategoryDelete" FunctionName="baioModel.Store.sp_CategoryDelete" />
           <FunctionImportMapping FunctionImportName="sp_CategoryDestroy" FunctionName="baioModel.Store.sp_CategoryDestroy" />
@@ -2387,6 +2921,8 @@
           <FunctionImportMapping FunctionImportName="sp_CategoryRankUpdate" FunctionName="baioModel.Store.sp_CategoryRankUpdate" />
           <FunctionImportMapping FunctionImportName="sp_CategoryRecover" FunctionName="baioModel.Store.sp_CategoryRecover" />
           <FunctionImportMapping FunctionImportName="sp_CategoryUpdate" FunctionName="baioModel.Store.sp_CategoryUpdate" />
+          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="baioModel.Store.sp_creatediagram" />
+          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="baioModel.Store.sp_dropdiagram" />
           <FunctionImportMapping FunctionImportName="sp_FirmAdd" FunctionName="baioModel.Store.sp_FirmAdd" />
           <FunctionImportMapping FunctionImportName="sp_FirmDeleteRecover" FunctionName="baioModel.Store.sp_FirmDeleteRecover" />
           <FunctionImportMapping FunctionImportName="sp_FirmDestroy" FunctionName="baioModel.Store.sp_FirmDestroy" />
@@ -2450,6 +2986,25 @@
           <FunctionImportMapping FunctionImportName="sp_FirmImagesAdd" FunctionName="baioModel.Store.sp_FirmImagesAdd" />
           <FunctionImportMapping FunctionImportName="sp_FirmImagesGet" FunctionName="baioModel.Store.sp_FirmImagesGet" />
           <FunctionImportMapping FunctionImportName="sp_FirmUpdate" FunctionName="baioModel.Store.sp_FirmUpdate" />
+          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="baioModel.Store.sp_helpdiagramdefinition">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="baioModel.sp_helpdiagramdefinition_Result">
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="baioModel.Store.sp_helpdiagrams">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="baioModel.sp_helpdiagrams_Result">
+                <ScalarProperty Name="Database" ColumnName="Database" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_ImageGetSrc" FunctionName="baioModel.Store.sp_ImageGetSrc" />
           <FunctionImportMapping FunctionImportName="sp_ImagesAdd" FunctionName="baioModel.Store.sp_ImagesAdd" />
           <FunctionImportMapping FunctionImportName="sp_ImagesDeleteRecover" FunctionName="baioModel.Store.sp_ImagesDeleteRecover" />
@@ -2545,6 +3100,8 @@
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="OrderCount" ColumnName="OrderCount" />
+                <ScalarProperty Name="Variant" ColumnName="Variant" />
                 <ScalarProperty Name="Stock" ColumnName="Stock" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="ImageSrc" ColumnName="ImageSrc" />
@@ -2558,7 +3115,9 @@
           <FunctionImportMapping FunctionImportName="sp_ProductImagesGet" FunctionName="baioModel.Store.sp_ProductImagesGet" />
           <FunctionImportMapping FunctionImportName="sp_ProductNameControl" FunctionName="baioModel.Store.sp_ProductNameControl" />
           <FunctionImportMapping FunctionImportName="sp_ProductRankControl" FunctionName="baioModel.Store.sp_ProductRankControl" />
+          <FunctionImportMapping FunctionImportName="sp_ProductSetAP" FunctionName="baioModel.Store.sp_ProductSetAP" />
           <FunctionImportMapping FunctionImportName="sp_ProductUpdate" FunctionName="baioModel.Store.sp_ProductUpdate" />
+          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="baioModel.Store.sp_renamediagram" />
           <FunctionImportMapping FunctionImportName="sp_TableAdd" FunctionName="baioModel.Store.sp_TableAdd" />
           <FunctionImportMapping FunctionImportName="sp_TableDeleteRecover" FunctionName="baioModel.Store.sp_TableDeleteRecover" />
           <FunctionImportMapping FunctionImportName="sp_TableGet" FunctionName="baioModel.Store.sp_TableGet">
@@ -2591,6 +3150,7 @@
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_TableSetStatus" FunctionName="baioModel.Store.sp_TableSetStatus" />
           <FunctionImportMapping FunctionImportName="sp_TableUpdate" FunctionName="baioModel.Store.sp_TableUpdate" />
+          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="baioModel.Store.sp_upgraddiagrams" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

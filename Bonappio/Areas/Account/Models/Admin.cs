@@ -12,12 +12,12 @@ namespace Bonappio.Areas.Account.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Order
+    public partial class Admin
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Order()
+        public Admin()
         {
-            this.OrderProduct = new HashSet<OrderProduct>();
+            this.Authority = new HashSet<Authority>();
         }
     
         public int ID { get; set; }
@@ -25,18 +25,17 @@ namespace Bonappio.Areas.Account.Models
         public Nullable<bool> IsDelete { get; set; }
         public Nullable<bool> IsActive { get; set; }
         public Nullable<int> FirmID { get; set; }
-        public Nullable<int> TableID { get; set; }
-        public Nullable<int> StatusID { get; set; }
-        public Nullable<System.DateTime> ServingDate { get; set; }
-        public Nullable<System.DateTime> StartDate { get; set; }
-        public Nullable<System.DateTime> EndDate { get; set; }
-        public Nullable<int> UserID { get; set; }
-        public string Description { get; set; }
+        public string Name { get; set; }
+        public string Surname { get; set; }
+        public string Email { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
+        public string Photo { get; set; }
+        public Nullable<System.DateTime> LastLoginDate { get; set; }
+        public Nullable<bool> IsManager { get; set; }
     
         public virtual Firm Firm { get; set; }
-        public virtual Status Status { get; set; }
-        public virtual Table Table { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<OrderProduct> OrderProduct { get; set; }
+        public virtual ICollection<Authority> Authority { get; set; }
     }
 }

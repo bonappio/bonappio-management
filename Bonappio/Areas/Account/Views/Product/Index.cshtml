@@ -4,8 +4,7 @@
 }
 <div class="tabbable">
     <ul class="nav nav-tabs">
-        <li class="active"><a href="#tab1" data-toggle="tab">Aktif</a></li>
-        <li><a href="#tab2" data-toggle="tab">Pasif</a></li>
+        <li class="active"><a href="#tab1" data-toggle="tab">Liste</a></li>
         <li><a href="#tab3" data-toggle="tab">Silinen</a></li>
         <li><a href="#tab4" data-toggle="tab">Yeni Ürün Ekle</a></li>
     </ul>
@@ -15,10 +14,13 @@
                 <table class="table table-hover filter-head" id="ActiveProducts" data-completed="false">
                     <thead>
                         <tr>
-                            <th>Resim</th>
-                            <th><span class="float-left">Ürün Adı</span></th>
-                            <th>Stok</th>
-                            <th><span style="float:right">İşlem</span></th>
+                            <th width="60px">Resim</th>
+                            <th style="text-align:left !important;padding-left:8px"><span class="float-left">Ürün Adı</span></th>
+                            <th style="width:30px">Stok</th>
+                            <th style="width:90px">Sipariş Sayısı</th>
+                            <th style="width:60px">Varyant</th>
+                            <th style="width:100px;text-align:center">Durum</th>
+                            <th style="width:100px;padding-right:8px;"><span style="float:right">İşlem</span></th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -38,26 +40,25 @@
                 </div>
             </div>
         </div>
-        <div class="tab-pane" id="tab2">
-            <p>Howdy, I'm in Section 2.</p>
-        </div>
         <div class="tab-pane" id="tab3">
             <p>Howdy, I'm in Section 2.</p>
         </div>
         <div class="tab-pane" id="tab4">
             <div class="row">
-
+                <div class="col-md-12">
+                    <div class="form-group"><div class="input-group"><div class="radio"><label><input type="radio" name="IncreaseorDecrease" value="Increase">Artır</label></div><div class="radio"><label><input type="radio" name="IncreaseorDecrease" value="Decrease">Azalt</label></div></div></div>
+                </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="field-2" class="control-label">Ürün Adı *</label>
-                        <input type="text" class="form-control required" data-null-error-msg="Boş Bırakılamaz" name="Title" placeholder="Ürün Adı">
+                        <input type="text" class="form-control required" data-null-error-msg="Boş Bırakılamaz" name="Name" placeholder="Ürün Adı">
                     </div>
                 </div>
                 <div class="col-md-6">
 
                     <label for="field-2" class="control-label">Kategori *</label>
                     <div class="form-group">
-                        <select style="width:100%;" name="CategoryID" >
+                        <select style="width:100%;" name="CategoryID">
                             <option class="first" value="">Seçiniz</option>
                         </select>
                     </div>
@@ -73,7 +74,7 @@
                 <div class="col-md-3">
                     <div class="form-group">
                         <label for="field-2" class="control-label">Maliyet</label>
-                        <input type="text" class="form-control numeric money" name="Cost" placeholder="Maliyet">
+                        <input type="text" class="form-control numeric money moneyValidate" name="Cost" placeholder="Maliyet">
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -115,7 +116,7 @@
                         <a class="btn btn-large btn-success addFeature" href="javascript:openFeatureArea()">Ürün Özellikleri Ekle</a>
                     </div>
                     <div class="form-group features">
-                     
+
                     </div>
                 </div>
 
@@ -125,13 +126,17 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <a href="#" id="productAdd" class="btn btn-primary"><i style="margin-right:10px;" class="fa fa-plus"></i><span>Ekle</span></a>
-                        </div>
-                    </div>
-                </div>
-
+                        
                     </div>
                 </div>
             </div>
-            @section scripts{
-                <script src="~/Areas/Account/Assets/js/product.js"></script>
-            }
+
+        </div>
+    </div>
+</div>
+@section scripts{
+    <link href="~/Areas/Account/Assets/js/switch/bootstrap-switch.min.css" rel="stylesheet" />
+    <script src="~/Areas/Account/Assets/js/switch/bootstrap-switch.min.js"></script>
+    <script src="~/Areas/Account/Assets/js/product.js"></script>
+
+}

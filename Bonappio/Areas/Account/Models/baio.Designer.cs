@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'C:\Users\Hakan Seysane\documents\visual studio 2015\Projects\Bonappio\Bonappio\Areas\Account\Models\baio.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\Users\Hakan Seysane\Documents\GitHubVisualStudio\bonappio-management\Bonappio\Areas\Account\Models\baio.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

@@ -166,6 +166,12 @@
     <Compile Include="Areas\Account\Controllers\CommonController.cs" />
     <Compile Include="Areas\Account\Controllers\IndexController.cs" />
     <Compile Include="Areas\Account\Controllers\ProductController.cs" />
+    <Compile Include="Areas\Account\Models\Admin.cs">
+      <DependentUpon>baio.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Account\Models\Authority.cs">
+      <DependentUpon>baio.tt</DependentUpon>
+    </Compile>
     <Compile Include="Areas\Account\Models\baio.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -215,6 +221,18 @@
     <Compile Include="Areas\Account\Models\ProductFeature.cs">
       <DependentUpon>baio.tt</DependentUpon>
     </Compile>
+    <Compile Include="Areas\Account\Models\sp_AdminGetAllbyPaging_Result.cs">
+      <DependentUpon>baio.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Account\Models\sp_AdminGetAll_Result.cs">
+      <DependentUpon>baio.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Account\Models\sp_AdminGet_Result.cs">
+      <DependentUpon>baio.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Account\Models\sp_AdminIsExists_Result.cs">
+      <DependentUpon>baio.tt</DependentUpon>
+    </Compile>
     <Compile Include="Areas\Account\Models\sp_CategoryGetAllbyPaging_Result.cs">
       <DependentUpon>baio.tt</DependentUpon>
     </Compile>
@@ -231,6 +249,12 @@
       <DependentUpon>baio.tt</DependentUpon>
     </Compile>
     <Compile Include="Areas\Account\Models\sp_FirmGet_Result.cs">
+      <DependentUpon>baio.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Account\Models\sp_helpdiagramdefinition_Result.cs">
+      <DependentUpon>baio.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Account\Models\sp_helpdiagrams_Result.cs">
       <DependentUpon>baio.tt</DependentUpon>
     </Compile>
     <Compile Include="Areas\Account\Models\sp_ImagesGet_Result.cs">
@@ -283,6 +307,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Account\Assets\css\account.css" />
+    <Content Include="Areas\Account\Assets\css\validate.css" />
     <Content Include="Areas\Account\Assets\css\vdmodal.css" />
     <Content Include="Areas\Account\Assets\img\bonappio-logo-light.png" />
     <Content Include="Areas\Account\Assets\js\datatables\dataTables.bootstrap.js" />
@@ -1175,6 +1200,8 @@
     <Content Include="Areas\Account\Assets\js\sortable\jquery.ui.sortable.min.js" />
     <Content Include="Areas\Account\Assets\js\sortable\sortable.min.js" />
     <Content Include="Areas\Account\Assets\js\sortable\style.css" />
+    <Content Include="Areas\Account\Assets\js\switch\bootstrap-switch.min.css" />
+    <Content Include="Areas\Account\Assets\js\switch\bootstrap-switch.min.js" />
     <Content Include="Areas\Account\Assets\js\vd_Modal.js" />
     <Content Include="Areas\Account\Assets\js\vd_Validate.js" />
     <Content Include="Areas\Account\Models\baio.Context.tt">

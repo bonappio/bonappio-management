@@ -11,18 +11,12 @@ namespace Bonappio.Areas.Account.Models
 {
     using System;
     
-    public partial class sp_ProductGetAllbyPaging_Result
+    public partial class sp_helpdiagrams_Result
     {
-        public Nullable<long> RN { get; set; }
-        public int ID { get; set; }
+        public string Database { get; set; }
         public string Name { get; set; }
-        public Nullable<bool> IsActive { get; set; }
-        public Nullable<int> OrderCount { get; set; }
-        public Nullable<int> Variant { get; set; }
-        public Nullable<int> Stock { get; set; }
-        public Nullable<decimal> Price { get; set; }
-        public string ImageSrc { get; set; }
-        public Nullable<int> Rank { get; set; }
-        public Nullable<int> Total { get; set; }
+        public int ID { get; set; }
+        public string Owner { get; set; }
+        public int OwnerID { get; set; }
     }
 }

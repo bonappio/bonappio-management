@@ -66,6 +66,11 @@
         return false;
     });
 });
+function setAP(ID, AP) {
+    $.post("/Account/Product/SetAP", { ID: ID, AP: AP }).error(function () {
+        alert("Bir hata oluştu, daha sonra tekrar deneyin.");
+    });
+}
 function openFeatureArea() {
     $('.addFeature').text('Yeni bir özellik ekle');
     $('.form-group.features').append('<div class="col-md-4">' +
@@ -136,14 +141,7 @@ jQuery.fn.dataTableExt.oApi.fnStandingRedraw = function (oSettings) {
         return r;
     }
 
-    //public Nullable<long> RN { get; set; }
-    //public int ID { get; set; }
-    //public string Name { get; set; }
-    //public Nullable<bool> IsActive { get; set; }
-    //public Nullable<int> Stock { get; set; }
-    //public Nullable<decimal> Price { get; set; }
-    //public string ImageSrc { get; set; }
-    //public Nullable<int> Total { get; set; }
+   
 
     var c_Image = {
         "orderable": false,
@@ -156,13 +154,25 @@ jQuery.fn.dataTableExt.oApi.fnStandingRedraw = function (oSettings) {
     var c_Name = {
         "orderable": false,
         "mRender": function (oObj, t, row) {
-            return row["Name"];
+            return '<div class="text-left">' + row["Name"] + '</div>';
         }
     };
     var c_Stock = {
         "orderable": false,
         "mRender": function (oObj, t, row) {
             return row["Stock"];
+        }
+    };
+    var c_OrderCount = {
+        "orderable": false,
+        "mRender": function (oObj, t, row) {
+            return row["OrderCount"];
+        }
+    };
+    var c_Variant = {
+        "orderable": false,
+        "mRender": function (oObj, t, row) {
+            return row["Variant"];
         }
     };
     //var c_Description = {
@@ -187,22 +197,40 @@ jQuery.fn.dataTableExt.oApi.fnStandingRedraw = function (oSettings) {
     //        return '<div class="showFullContent contentHtml">Görüntüle<div class="dis-none">' + row["Text"] + '</div></div>';
     //    },
     //};
+    var c_AP = {
+        "orderable": false,
+        "mRender": function (oObj, t, row) {
+            var checked;
+            if (row["IsActive"] == true) {
+                checked = "checked"
+            }
+            else { checked = ""; }
 
+            return '<div style="text-align:center"><input type="checkbox" data-size="mini" data-id="' + row["ID"] + '" data-on-color="success" data-on-text="aktif" data-off-text="pasif" name="AP" ' + checked + '><div>';
+        }
+    }
     var c_Process = {
 
         "orderable": false,
         "sWidth": "120px",
         "mRender": function (oObj, t, row) {
-            return '<a class="edit btn btn-sm btn-default" data-id="' + row["ID"] + '" data-rank="' + row["Rank"] + '" href="#"><i class="fa fa-edit"></i></a>  <a class="delete btn btn-sm btn-danger" onclick="Delete(\'' + row["ID"] + '\',\'' + Type + '\')"  data-id="' + row["ID"] + '" href="#"><i class="fa fa-remove"></i></a>';
+            return '<div class="text-right"><a class="edit btn btn-sm btn-default" data-toggle="tooltip" data-placement="top" title="Düzenle" data-id="' + row["ID"] + '" data-rank="' + row["Rank"] + '" href="#"><i class="fa fa-edit"></i></a>  <a class="delete btn btn-sm btn-danger" onclick="Delete(\'' + row["ID"] + '\',\'' + Type + '\')" data-toggle="tooltip" data-placement="top" title="Sil"  data-id="' + row["ID"] + '" href="#"><i class="fa fa-remove"></i></a></div>';
         }
     };
-    var columns = [c_Image, c_Name, c_Stock, c_Process];
+    var columns = [c_Image, c_Name, c_Stock, c_OrderCount,c_Variant,c_AP, c_Process];
     var Type = "";
     var table = $('#ActiveProducts').dataTable({
         "bServerSide": true,
         "sAjaxSource": "/Account/Product/GetProducts",
         "searchable": false,
         "fnDrawCallback": function () {
+            $('[name="AP"]').bootstrapSwitch();
+            $('[name="AP"]').on('switchChange.bootstrapSwitch', function (event, state) {
+               
+                setAP($(this).attr("data-id"), state);
+            });
+
+            $('[data-toggle="tooltip"]').tooltip()
             //$('.dataTables_processing').html('<i class="fa fa-circle-o-notch fa-spin fa-2x"></i>');
             if ($('#add' + Type + '').size() == 0) {
                 //$('.dataTables_length').prepend('<button type="button" id="add' + Type + '" data-target="#' + Type + 'Add" class="addContent btn btn-primary btn-md"><span><i style="left:-20px;" class="fa fa-plus fa-2x"></i>' + TypeName + ' Ekle</span></button>');
