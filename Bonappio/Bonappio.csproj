@@ -307,6 +307,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Account\Assets\css\account.css" />
+    <Content Include="Areas\Account\Assets\css\checkbox\build.css" />
+    <Content Include="Areas\Account\Assets\css\checkbox\build.less.css" />
     <Content Include="Areas\Account\Assets\css\validate.css" />
     <Content Include="Areas\Account\Assets\css\vdmodal.css" />
     <Content Include="Areas\Account\Assets\img\bonappio-logo-light.png" />
@@ -1142,6 +1144,7 @@
     <Content Include="Areas\Account\Assets\js\datatables\table.editable.js" />
     <Content Include="Areas\Account\Assets\js\datatables\table.editable.min.js" />
     <Content Include="Areas\Account\Assets\js\jquery.mask.js" />
+    <Content Include="Areas\Account\Assets\js\jquery.maskMoney.js" />
     <Content Include="Areas\Account\Assets\js\main.js" />
     <Content Include="Areas\Account\Assets\js\product.js" />
     <Content Include="Areas\Account\Assets\js\select2\select2-bootstrap.css" />
@@ -1338,6 +1341,8 @@
     <Content Include="Areas\Account\Models\baio.edmx.diagram">
       <DependentUpon>baio.edmx</DependentUpon>
     </Content>
+    <Content Include="Areas\Account\Assets\css\checkbox\build.less" />
+    <Content Include="Areas\Account\Assets\css\checkbox\build.scss" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />

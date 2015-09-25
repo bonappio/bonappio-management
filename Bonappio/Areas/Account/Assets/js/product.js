@@ -72,7 +72,8 @@ function setAP(ID, AP) {
     });
 }
 function openFeatureArea() {
-    $('.addFeature').text('Yeni bir özellik ekle');
+    var size = $('.form-group.features .col-md-4').size();
+    $('.addFeature').text('Varyant ekle');
     $('.form-group.features').append('<div class="col-md-4">' +
         '<a href="#" class="btn btn-mini btn-danger btnRemoveFeature"><i class="fa fa-remove"></i></a>'+
                     '<div class="form-group">'+
@@ -81,19 +82,17 @@ function openFeatureArea() {
                     '</div>' +
                     '<div class="form-group">'+
     '<label for="field-2" class="control-label">Fiyat Farkı</label>' +
-    '<input type="text" class="form-control numeric money" name="PriceDifference" placeholder="Fiyat Farkı">' +
-'</div>'+
+    '<input type="text" class="form-control numeric money" name="PriceDifference" value="0.00" placeholder="Fiyat Farkı">' +
+'</div><div class="form-group"><div class="input-group"><div class="radio radio-primary"><input type="radio" name="IncreaseorDecrease' + size + '" id="radio1' + size + '" value="Increase" checked><label for="radio1' + size + '">Artır</label></div><div class="radio radio-primary"><input type="radio" name="IncreaseorDecrease' + size + '" id="radio2' + size + '" value="Decrease"><label for="radio2' + size + '">Azalt</label></div></div></div>' +
                 '</div>');
 
-    $('.form-control.numeric.money').mask('000.000.000.000.000,00', { reverse: true });
+    $('.form-control.numeric.money').maskMoney();
 
     $('.btnRemoveFeature').click(function () {
         $(this).parent().remove();
-        if ($('.btnRemoveFeature').length == 0) {
-            $('.addFeature').text('Ürün Özellikleri Ekle');
-        }
         return false;
     });
+
 }
 
 

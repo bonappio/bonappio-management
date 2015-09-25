@@ -1,12 +1,9 @@
 ﻿$(function () {
     inputSelect();
-    //$('.form-control.numeric').not('.money').mask('000000', { reverse: true });
-    //$('.form-control.numeric.money').mask('000.000.000.000.000,00', { reverse: true });
+    $('.form-control.numeric').not('.money').mask('000000', { reverse: true });
+    $('.form-control.numeric.money').maskMoney();
 
-    $('.moneyValidate').on('input',(function () {
-        if ( moneyValidate($(this).val(), this) == false) {
-        }
-    }));
+    
     // Layout Sidebar Aktif Linkler
     var URL = window.location.href;
     URL = URL.replace("http://", "");
@@ -20,22 +17,7 @@
     });
 
 });
-function moneyValidate(x, el) {
-    var parts = x.split(".");
-     if (typeof parts[1] == "string" && (parts[1].length == 0))
-        return false;
-    var n = parseFloat(x);
-    if (isNaN(n)) {
 
-        $(this).val('');
-        return false;
-    }
-    else {
-        $(el).val(n);
-    }
-
-    return true;
-}
 function getCategories(type)
 {
     $.post("/Account/Common/GetCategories", { Type: type }, function (data) {
